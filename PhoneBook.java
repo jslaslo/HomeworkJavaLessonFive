@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.*;
 
 public class PhoneBook {
@@ -41,7 +42,7 @@ public class PhoneBook {
                             "%nПовторите попытку...%n");
                 }
             } else if (data[0].equals("LIST")) {
-                getAll(phoneBook);
+                System.out.println(getAll(phoneBook));
             } else if (data[0].equals("EXIT")) {
                 System.out.printf("До свидания!%n");
                 isWork = false;
@@ -89,16 +90,23 @@ public class PhoneBook {
         }
     }
 
-    static void getAll(Map<String, List<String>> phoneBook) {
+    static String getAll(Map<String, List<String>> phoneBook) {
         if (phoneBook.isEmpty()) {
-            System.out.printf("Телефонный справочник пока пуст%n");
+            return "Телефонный справочник пока пуст%n";
         } else {
-            LinkedHashSet<Map<String, List<String>>> a = new LinkedHashSet<>();
-
-            for (Map.Entry<String, List<String>> entry : phoneBook.entrySet()) {
-                System.out.printf("%s -> %s%n", entry.getKey(), entry.getValue().toString());
+            StringBuilder stringBuilder = new StringBuilder();
+            List<Map.Entry<String, List<String>>> entries = new ArrayList<>(phoneBook.entrySet());
+            entries.sort((entry1, entry2) -> Integer.compare(entry2.getValue().size(), entry1.getValue().size()));
+            for (Map.Entry<String, List<String>> entry : entries) {
+                List<String> phoneNumbers = entry.getValue();
+                stringBuilder.append(entry.getKey());
+                stringBuilder.append(" -> ");
+                stringBuilder.append(phoneNumbers);
+                stringBuilder.append("\n");
             }
+            return stringBuilder.toString();
         }
     }
 }
+
 
